@@ -1,0 +1,169 @@
+/* ==========================================================================
+   1. 字体和全局样式
+   ========================================================================== */
+
+/* 从谷歌字体库引入两种中文字体：一种是行楷，一种是圆体 */
+@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&display=swap');
+
+body {
+    font-family: 'ZCOOL KuaiLe', cursive; /* 全局默认使用可爱的圆体 */
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(180deg, #f6f8d4 0%, #AEE6E6 100%); /* 你自己搭配的渐变背景色 */
+    color: #4a4a4a;
+    text-align: center;
+    position: relative; 
+    overflow-x: hidden; 
+}
+
+/* ==========================================================================
+   2. 动态背景图案
+   ========================================================================== */
+
+/* 这是放置所有小图案的容器，它会固定在屏幕上，并置于最底层 */
+#background-patterns {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* -1代表把它放在所有内容的下面 */
+    pointer-events: none; /* 让鼠标可以“穿透”它，点击到后面的内容 */
+}
+/* 单个小图案的样式 */
+.bg-pattern {
+    position: absolute;
+    filter: opacity(0.7) saturate(70%) brightness(1.2); /* 滤镜，让图案变成柔和的马卡龙色 */
+    animation: fadeInOut 8s infinite; /* 应用下面定义的动画效果 */
+}
+/* 定义一个动画，让图案有淡入淡出的呼吸感 */
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; transform: scale(0.9); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+/* ==========================================================================
+   3. 页面顶部 (Header)
+   ========================================================================== */
+
+header h1 {
+    font-family: 'Ma Shan Zheng', cursive; /* 标题使用行楷字体 */
+    font-size: 3.5rem;
+    font-weight: normal; /* 书法字体通常不需要加粗 */
+    color: #d2691e;
+    padding-top: 20px;
+    margin: 0;
+}
+
+#datetime-display {
+    font-family: 'ZCOOL KuaiLe', cursive;
+    font-size: 1.2rem; /* 你要求调大的时间字号 */
+    color: #8c7853;
+}
+#quote-display {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 1.5rem;
+    color: #d2691e;
+    min-height: 2.5rem;
+}
+#history-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 1.2rem;
+    color: #333; /* 你要求改成黑色的链接 */
+    font-weight: bold;
+    text-decoration: none;
+}
+#history-link:hover {
+    text-decoration: underline;
+}
+
+/* Flash 消息的样式，用于显示“记录成功”等提示 */
+.flash-messages{padding:0 20px;margin-bottom:1rem}.flash{padding:10px;margin-bottom:10px;border-radius:8px;color:#fff;font-weight:bold}.flash.success{background-color:#81c784}.flash.error{background-color:#e57373}
+
+/* ==========================================================================
+   4. 主布局和模块通用样式
+   ========================================================================== */
+
+/* 这是所有形状和图片的“大画板”，我们用它来控制整体布局范围 */
+.free-layout-container {
+    position: relative; /* 设为相对定位，这样内部的绝对定位元素才会相对于它来移动 */
+    width: 100%;
+    max-width: 1200px;
+    height: 1100px;
+    margin: 0 auto;
+}
+
+/* 所有模块（圆形、方形、图片）的通用设置 */
+.shape-container, .placeholder {
+    position: absolute; /* 关键！让我们可以自由摆放它们的位置 */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+/* (其他通用样式...) */
+.shape-container{padding:20px 30px}.shape-container h3{font-family:'Ma Shan Zheng',cursive;font-weight:normal;font-size:1.8rem;margin:0 0 10px 0;color:#333}.shape-container .content-area{font-size:1.1rem;flex-grow:1;width:100%;overflow-y:auto;text-align:center}.shape-container form{display:flex;flex-direction:column;gap:8px;width:80%;margin-top:10px}.shape-container input,.shape-container textarea,.shape-container button{font-family:inherit;border:2px solid rgba(0,0,0,.1);border-radius:8px;padding:8px;width:100%;box-sizing:border-box}.shape-container button{background:#fff;cursor:pointer;font-weight:bold}
+
+/* 之前为你修复的表单输入框样式 */
+#diary-circle form button {
+    width: 50%; /* 缩短日记的“记录”按钮 */
+    margin: 0 auto;
+}
+#insight-heart form {
+    align-items: center; /* 居中心得的表单 */
+}
+#insight-heart form textarea,
+#insight-heart form button {
+    width: 90%;
+}
+
+/* (秋招链接样式...) */
+#recruitment-square .content-area ul{list-style:none;padding:0;margin:0}#recruitment-square .content-area a{text-decoration:none;color:#6a1b9a;font-weight:bold;display:block;padding:8px;font-size:1.2rem}#recruitment-square .content-area a:hover{background:rgba(255,255,255,.5);border-radius:5px}
+
+/* ==========================================================================
+   5. 各个模块的精确定位、形状和颜色
+   ========================================================================== */
+
+#diary-circle {
+    top: 50px;
+    left: 50px;
+    width: 420px;
+    height: 420px;
+    background-color: #cce7ff;
+    border-radius: 50%; /* 关键：把正方形变成圆形 */
+}
+
+#recruitment-square {
+    top: 420px;
+    left: 700px;
+    width: 300px;
+    height: 300px;
+    background-color: #e3dffd;
+    border-radius: 50%; /* 也变成圆形 */
+    padding: 30px;
+}
+
+#insight-heart {
+    top: 730px;
+    left: 100px;
+    width: 350px;
+    height: 350px;
+    background-color: #feebed;
+    border-radius: 50%; /* 也变成圆形 */
+    padding: 30px;
+    clip-path: none;
+}
+#insight-heart .shape-inner-content{width:80%;height:80%;display:flex;flex-direction:column;justify-content:center;align-items:center} /* 这个是为了修正爱心形状内部对齐的，现在变成圆形了，其实可以简化，但保留也没问题 */
+
+/* 图片占位符的样式 */
+.placeholder{padding:0;border-radius:15px;overflow:hidden;box-shadow:5px 5px 15px rgba(0,0,0,.1);transition:transform .3s ease}
+.placeholder:hover{transform:scale(1.05) !important}
+.placeholder img{width:100%;height:100%;object-fit:cover}
+
+/* 图片的精确定位和倾斜角度 */
+#cat-placeholder{top:100px;right:80px;width:330px;height:230px;transform:rotate(-10deg)}
+#dog-placeholder{top:500px;left:135px;width:260px;height:200px;transform:rotate(10deg)}
+#illustration-placeholder{top:800px;right:120px;width:360px;height:264px;transform:rotate(6deg)}

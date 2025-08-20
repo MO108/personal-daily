@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今天超级棒！</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div id="background-patterns"></div>
+
+    <header>
+        <h1>今天超级棒！</h1>
+        <div id="datetime-display"></div>
+        <p id="quote-display">{{ quote }}</p>
+        <a id="history-link" href="{{ url_for('summary') }}">查看所有历史记录</a>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main class="free-layout-container">
+        <div id="diary-circle" class="shape-container">
+            <h3>昨天的成功日记</h3>
+            <div class="content-area">
+                {% if latest_diary %}
+                    <p>1. {{ latest_diary.content1 }}</p>
+                    <p>2. {{ latest_diary.content2 }}</p>
+                    <p>3. {{ latest_diary.content3 }}</p>
+                {% else %}
+                    <p>昨天没有日记哦。</p>
+                {% endif %}
+            </div>
+            <form method="POST" action="{{ url_for('add_diary') }}">
+                <input type="text" name="content1" placeholder="依然记录今天成功日-记吧！" required>
+                <input type="text" name="content2" placeholder="事项二" required>
+                <input type="text" name="content3" placeholder="事项三" required>
+                <button type="submit">记录</button>
+            </form>
+        </div>
+
+        <div id="recruitment-square" class="shape-container">
+            <h3>秋招进度链接</h3>
+             <div class="content-area">
+                <ul>
+                    {% for item in recruitments %}
+                        <li><a href="{{ item.link }}" target="_blank">{{ item.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        
+        <div id="insight-heart" class="shape-container">
+            <div class="shape-inner-content">
+                <h3>每日心得</h3>
+                <div class="content-area">
+                     {% if latest_insight %}
+                        <p>{{ latest_insight.content }}</p>
+                    {% else %}
+                        <p>今天还没有感悟~</p>
+                    {% endif %}
+                </div>
+                <form method="POST" action="{{ url_for('add_insight') }}">
+                    <textarea name="insight_content" rows="3" placeholder="记录今天的感悟..." required></textarea>
+                    <button type="submit">记录</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="cat-placeholder" class="placeholder">
+            <img src="{{ url_for('static', filename='/cat.jpg') }}" alt="可爱的小猫咪">
+        </div>
+
+        <div id="dog-placeholder" class="placeholder">
+            <img src="{{ url_for('static', filename='/future.jpg') }}" alt="未来">
+        </div>
+        
+        <div id="illustration-placeholder" class="placeholder">
+            <img src="{{ url_for('static', filename='/horse.jpg') }}" alt="奔马">
+        </div>
+    </main>
+
+    <script>
+        function updateTime(){const timeElement=document.getElementById("datetime-display");const beijingTime=new Date().toLocaleString("zh-CN",{timeZone:"Asia/Shanghai",year:"numeric",month:"long",day:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false});timeElement.textContent=`北京时间：${beijingTime}`}updateTime();setInterval(updateTime,1000);
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('background-patterns');
+            const patterns = [
+                'https://api.iconify.design/fluent-emoji:sparkles.svg',
+                'https://api.iconify.design/fluent-emoji:star.svg',
+                'https://api.iconify.design/fluent-emoji:cat-face.svg',
+                'https://api.iconify.design/fluent-emoji:four-leaf-clover.svg',
+                'https://api.iconify.design/fluent-emoji:glowing-star.svg'
+            ];
+            const patternCount = 30; // 维持数量
+
+            for (let i = 0; i < patternCount; i++) {
+                const pattern = document.createElement('img');
+                pattern.src = patterns[Math.floor(Math.random() * patterns.length)];
+                pattern.className = 'bg-pattern';
+                
+                pattern.style.top = `${Math.random() * 100}vh`;
+                pattern.style.left = `${Math.random() * 100}vw`;
+                // 把尺寸范围改回小尺寸 (10到25px)
+                pattern.style.width = `${Math.random() * 15 + 10}px`; 
+                pattern.style.opacity = Math.random() * 0.5 + 0.2; // 透明度范围 (0.2到0.7)
+                pattern.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(pattern);
+            }
+        });
+    </script>
+</body>
+</html>

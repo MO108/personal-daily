@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>我的所有记录</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* 为这个页面添加一些专属的简单样式 */
+        .summary-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fffacd;
+        }
+        .summary-section {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            text-align: left;
+        }
+        .summary-section h2 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="summary-container">
+        <header>
+            <h1>我的所有记录</h1>
+            <a href="{{ url_for('index') }}">返回主页</a>
+        </header>
+
+        <section class="summary-section">
+            <h2>成功日记汇总</h2>
+            {% for diary in diaries %}
+                <hr>
+                <p><strong>日期:</strong> {{ diary.date_posted.strftime('%Y-%m-%d') }}</p>
+                <ul>
+                    <li>{{ diary.content1 }}</li>
+                    <li>{{ diary.content2 }}</li>
+                    <li>{{ diary.content3 }}</li>
+                </ul>
+            {% else %}
+                <p>还没有任何成功日记。</p>
+            {% endfor %}
+        </section>
+
+        <section class="summary-section">
+            <h2>每日心得汇总</h2>
+            {% for insight in insights %}
+                <hr>
+                <p><strong>日期:</strong> {{ insight.date_posted.strftime('%Y-%m-%d') }}</p>
+                <p>{{ insight.content }}</p>
+            {% else %}
+                <p>还没有任何心得。</p>
+            {% endfor %}
+        </section>
+    </div>
+</body>
+</html>
